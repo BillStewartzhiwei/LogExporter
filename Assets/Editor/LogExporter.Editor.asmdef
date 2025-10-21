@@ -1,0 +1,16 @@
+{
+    "name": "LogExporter.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:11e1f60ef76b4d444be37af1cf07420c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
