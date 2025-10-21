@@ -1,18 +1,17 @@
 {
-  "name": "com.yourcompany.mypackage",
-  "displayName": "My Package",
+  "name": "com.zw.logexporter",
+  "displayName": "LogExporter",
   "version": "1.0.0",
   "unity": "2020.3",
-  "description": "这是一个可通过Git导入的Unity插件示例。",
+  "description": "It is a Unity runtime log export toolkit that supports outputting logs to files while the project is running. It is flexible and configurable, suitable for development and debugging, VR/AR, mobile or packaged release projects.",
   "keywords": [
     "plugin",
-    "example",
     "git"
   ],
   "author": {
-    "name": "Your Name",
-    "email": "you@example.com",
+    "name": "zhiwei",
+    "email": "zhiwei3217@gmail.com",
     "url": "https://yourcompany.com"
   },
-  "dependencies": {}
+  "documentationUrl": "https://github.com/BillStewartzhiwei/LogExporter#readme"
 }

@@ -18,32 +18,54 @@ namespace MyTools
         {
             if (isInitialized) return;
 
-            // 从 Resources 加载配置
+            // 加载配置
             currentConfig = Resources.Load<RuntimeLogConfig>("RuntimeLogConfig");
             if (currentConfig == null)
             {
                 Debug.LogWarning("[RuntimeLogExporter] No RuntimeLogConfig found in Resources folder.");
                 return;
             }
-            
+
+            // 获取项目根目录
             string projectRoot = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
-            
-            string basePath = Path.Combine(projectRoot, "Logs");
-            
-            if (!string.IsNullOrEmpty(currentConfig.exportDirectory))
-                basePath = currentConfig.exportDirectory;
+            string basePath = string.IsNullOrEmpty(currentConfig.exportDirectory)
+                ? Path.Combine(projectRoot, "Logs")
+                : currentConfig.exportDirectory;
+
+            // 创建目录（如果已存在不会报错）
             if (!Directory.Exists(basePath))
                 Directory.CreateDirectory(basePath);
-            logPath = Path.Combine(basePath, $"Log_{DateTime.Now:yyyyMMdd_HHmmss}.txt");
+
+            // 根据命名模式生成日志文件名
+            switch (currentConfig.namingMode)
+            {
+                case LogNamingMode.ByDate:
+                    logPath = Path.Combine(basePath, $"Log_{DateTime.Now:yyyyMMdd_HHmmss}.txt");
+                    break;
+
+                case LogNamingMode.ByCount:
+                    int count = 1;
+                    string tempPath;
+                    do
+                    {
+                        tempPath = Path.Combine(basePath, $"Log_{count}.txt");
+                        count++;
+                    } while (File.Exists(tempPath));
+                    logPath = tempPath;
+                    break;
+            }
+
+            // 打开日志写入流
             logWriter = new StreamWriter(logPath, true, Encoding.UTF8);
             logWriter.WriteLine($"[RuntimeLogExporter] Started at {DateTime.Now:yyyy/MM/dd HH:mm:ss}");
             logWriter.Flush();
 
+            // 注册 Unity 日志回调
             Application.logMessageReceived += HandleLog;
             Application.quitting += OnApplicationQuit;
 
             isInitialized = true;
-            Debug.Log($"[RuntimeLogExporter] Logging started. {basePath}");
+            Debug.Log("[RuntimeLogExporter] Logging started.");
         }
 
         private static void HandleLog(string logString, string stackTrace, LogType type)
