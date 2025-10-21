@@ -1,25 +1,34 @@
-using System.IO;
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
+using System.IO;
 
-namespace MyTools
+namespace MyTools.Editor
 {
-    [CustomEditor(typeof(RuntimeLogConfig))]
-    public class RuntimeLogConfigEditor : Editor
+    public static class RuntimeLogConfigEditor
     {
-        public override void OnInspectorGUI()
+        [MenuItem("Tools/Runtime Log Exporter/Create Config Asset")]
+        public static void CreateConfigAsset()
         {
-            DrawDefaultInspector();
+            string dir = "Assets/Plugins/RuntimeLogExporter/Resources";
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
 
-            RuntimeLogConfig config = (RuntimeLogConfig)target;
-            if (GUILayout.Button("Open Logs Folder"))
+            string assetPath = Path.Combine(dir, "RuntimeLogConfig.asset");
+            if (File.Exists(assetPath))
             {
-                string path = string.IsNullOrEmpty(config.exportDirectory)
-                    ? Path.Combine(Application.dataPath, "../Logs")
-                    : config.exportDirectory;
-                path = Path.GetFullPath(path);
-                EditorUtility.RevealInFinder(path);
+                Debug.LogWarning("RuntimeLogConfig.asset already exists.");
+                return;
             }
+
+            var config = ScriptableObject.CreateInstance<RuntimeLogConfig>();
+            AssetDatabase.CreateAsset(config, assetPath);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+
+            Debug.Log("Created RuntimeLogConfig.asset at: " + assetPath);
         }
     }
+
 }
+#endif
