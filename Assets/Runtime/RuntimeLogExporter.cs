@@ -25,14 +25,15 @@ namespace MyTools
                 Debug.LogWarning("[RuntimeLogExporter] No RuntimeLogConfig found in Resources folder.");
                 return;
             }
-
-            // 路径设定
-            string basePath = Path.Combine(Application.dataPath, "../Logs");
+            
+            string projectRoot = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
+            
+            string basePath = Path.Combine(projectRoot, "Logs");
+            
             if (!string.IsNullOrEmpty(currentConfig.exportDirectory))
                 basePath = currentConfig.exportDirectory;
-
-            Directory.CreateDirectory(basePath);
-
+            if (!Directory.Exists(basePath))
+                Directory.CreateDirectory(basePath);
             logPath = Path.Combine(basePath, $"Log_{DateTime.Now:yyyyMMdd_HHmmss}.txt");
             logWriter = new StreamWriter(logPath, true, Encoding.UTF8);
             logWriter.WriteLine($"[RuntimeLogExporter] Started at {DateTime.Now:yyyy/MM/dd HH:mm:ss}");
@@ -42,7 +43,7 @@ namespace MyTools
             Application.quitting += OnApplicationQuit;
 
             isInitialized = true;
-            Debug.Log("[RuntimeLogExporter] Logging started.");
+            Debug.Log($"[RuntimeLogExporter] Logging started. {basePath}");
         }
 
         private static void HandleLog(string logString, string stackTrace, LogType type)

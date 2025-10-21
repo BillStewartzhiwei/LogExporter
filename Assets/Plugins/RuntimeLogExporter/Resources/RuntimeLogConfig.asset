@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e668f6449306dc4cb151cb542f4a8b3, type: 3}
   m_Name: RuntimeLogConfig
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyTools.RuntimeLogConfig
   exportDirectory: 
   alsoPrintToConsole: 1
   logInfo: 1

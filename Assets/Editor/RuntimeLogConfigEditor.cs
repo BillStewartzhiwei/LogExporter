@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 using System.IO;
-
+using MyTools;
 namespace MyTools.Editor
 {
     public static class RuntimeLogConfigEditor
@@ -29,6 +29,5 @@ namespace MyTools.Editor
             Debug.Log("Created RuntimeLogConfig.asset at: " + assetPath);
         }
     }
-
 }
 #endif
