@@ -40,7 +40,7 @@ namespace MyTools
             switch (currentConfig.namingMode)
             {
                 case LogNamingMode.ByDate:
-                    logPath = Path.Combine(basePath, $"Log_{DateTime.Now:yyyyMMdd_HHmmss}.txt");
+                    logPath = Path.Combine(basePath, $"Log_{DateTime.Now:yyyyMMdd}.txt");
                     break;
 
                 case LogNamingMode.ByCount:
@@ -57,6 +57,7 @@ namespace MyTools
 
             // 打开日志写入流
             logWriter = new StreamWriter(logPath, true, Encoding.UTF8);
+            logWriter.WriteLine();
             logWriter.WriteLine($"[RuntimeLogExporter] Started at {DateTime.Now:yyyy/MM/dd HH:mm:ss}");
             logWriter.Flush();
 
