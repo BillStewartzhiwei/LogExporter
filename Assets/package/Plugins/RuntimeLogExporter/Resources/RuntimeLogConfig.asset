@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MyTools.RuntimeLogConfig
   exportDirectory: 
   alsoPrintToConsole: 1
+  namingMode: 0
+  enableSizeRotation: 0
+  maxFileSizeKB: 1024
   logInfo: 1
   logWarning: 1
   logError: 1
   logException: 1
+  includeDeviceInfo: 1
