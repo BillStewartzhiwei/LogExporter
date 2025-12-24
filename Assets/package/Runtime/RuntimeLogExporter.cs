@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace MyTools
 {
-    [DisallowMultipleComponent]
     public static class RuntimeLogExporter
     {
         private static bool isInitialized = false;
