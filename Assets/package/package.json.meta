@@ -1,6 +1,7 @@
 fileFormatVersion: 2
 guid: fcdd8daa74808844e81cb39e2c3b14d3
-TextScriptImporter:
+importerOverride: UnityEditor.CoreModule:UnityEditor:TextScriptImporter
+PackageManifestImporter:
   externalObjects: {}
   userData: 
   assetBundleName: 
