@@ -247,7 +247,8 @@ namespace MyTools
 #endif
                 Application.quitting -= OnApplicationQuit;
             }
-            catch { }
+            catch
+            { }
 
             CloseWriterInternal();
             isInitialized = false;

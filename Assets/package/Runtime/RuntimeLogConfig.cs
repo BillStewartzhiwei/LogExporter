@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.IO;
 
 namespace MyTools
 {
@@ -33,5 +34,57 @@ namespace MyTools
 
         [Header("是否在日志文件头包含设备/应用信息")]
         public bool includeDeviceInfo = true;
+
+        // 返回最终用于存放日志的目录，如果未设置则使用 Application.persistentDataPath/Logs
+        public string GetExportDirectory()
+        {
+            if (string.IsNullOrWhiteSpace(exportDirectory))
+            {
+                return Path.Combine(Application.persistentDataPath, "Logs");
+            }
+            return exportDirectory;
+        }
+
+        // 返回以字节为单位的最大文件大小（基于 maxFileSizeKB）
+        public long GetMaxFileSizeBytes()
+        {
+            // 确保至少为 1 KB
+            int kb = Mathf.Max(1, maxFileSizeKB);
+            return (long)kb * 1024L;
+        }
+
+        // 根据 Unity 的 LogType 决定该日志是否应当被记录到文件
+        public bool ShouldLog(LogType logType)
+        {
+            switch (logType)
+            {
+                case LogType.Log:
+                    return logInfo;
+                case LogType.Warning:
+                    return logWarning;
+                case LogType.Error:
+                case LogType.Assert:
+                    return logError;
+                case LogType.Exception:
+                    return logException;
+                default:
+                    return true;
+            }
+        }
+
+        // 在编辑器或资源被修改时，做一些基本的约束和清理
+        private void OnValidate()
+        {
+            // 至少 1 KB，避免意外设为 0
+            if (maxFileSizeKB < 1) maxFileSizeKB = 1;
+            // 上限设为 10 GB（以 KB 为单位）以防输入异常巨大值
+            int maxAllowedKB = 10 * 1024 * 1024; // 10 * 1024 * 1024 KB = 10 GB
+            if (maxFileSizeKB > maxAllowedKB) maxFileSizeKB = maxAllowedKB;
+
+            if (exportDirectory != null)
+            {
+                exportDirectory = exportDirectory.Trim();
+            }
+        }
     }
 }
