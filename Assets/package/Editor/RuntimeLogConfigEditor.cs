@@ -7,6 +7,9 @@ namespace MyTools.Editor
 {
     public static class RuntimeLogConfigEditor
     {
+        /// <summary>
+        /// Creates a RuntimeLogConfig asset in the specified path if it doesn't already exist.
+        /// </summary>
         [MenuItem("Tools/Runtime Log Exporter/Create Config Asset")]
         public static void CreateConfigAsset()
         {
@@ -25,7 +28,7 @@ namespace MyTools.Editor
             AssetDatabase.CreateAsset(config, assetPath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-
+			Debug.Log("Created RuntimeLogConfig " + assetPath);
             Debug.Log("Created RuntimeLogConfig.asset at: " + assetPath);
         }
     }
