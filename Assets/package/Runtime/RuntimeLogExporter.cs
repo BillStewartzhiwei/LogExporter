@@ -40,7 +40,6 @@ namespace MyTools
         private static void Init()
         {
             if (isInitialized) return;
-
             try
             {
                 currentConfig = Resources.Load<RuntimeLogConfig>("RuntimeLogConfig");
