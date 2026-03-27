@@ -1,8 +1,8 @@
 {
   "name": "com.zw.logexporter",
   "displayName": "LogExporter",
-  "version": "1.0.0",
-  "unity": "2020.3",
+  "version": "1.0.1",
+  "unity": "2022.3",
   "description": "It is a Unity runtime log export toolkit that supports outputting logs to files while the project is running. It is flexible and configurable, suitable for development and debugging, VR/AR, mobile or packaged release projects.",
   "keywords": [
     "plugin",
