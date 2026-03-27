@@ -26,6 +26,11 @@ namespace MyTools
         [Tooltip("当 enableSizeRotation 为 true 时生效，单位 KB")]
         public int maxFileSizeKB = 1024;
 
+        [Header("是否将历史日志归档到 Archive 文件夹")]
+        public bool enableArchive = false;
+        [Tooltip("归档目录名（相对日志目录）")]
+        public string archiveFolderName = "Archive";
+
         [Header("日志级别过滤")]
         public bool logInfo = true;
         public bool logWarning = true;
@@ -84,6 +89,16 @@ namespace MyTools
             if (exportDirectory != null)
             {
                 exportDirectory = exportDirectory.Trim();
+            }
+
+            if (archiveFolderName != null)
+            {
+                archiveFolderName = archiveFolderName.Trim();
+            }
+
+            if (string.IsNullOrWhiteSpace(archiveFolderName))
+            {
+                archiveFolderName = "Archive";
             }
         }
     }
