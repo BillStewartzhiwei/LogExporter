@@ -13,5 +13,7 @@
     "email": "zhiwei3217@gmail.com",
     "url": "https://yourcompany.com"
   },
-  "documentationUrl": "https://github.com/BillStewartzhiwei/LogExporter#readme"
+  "documentationUrl": "https://github.com/BillStewartzhiwei/LogExporter#readme",
+  "changelogUrl":"https://github.com/BillStewartzhiwei/LogExporter/releases"
 }
+
