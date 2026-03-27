@@ -130,6 +130,8 @@ namespace MyTools
                 return;
             }
 
+            TryArchiveStaleLogs(basePath, logPath);
+
             // 注册日志回调：编辑器使用非线程版本以避免与 Console 冲突
 #if UNITY_EDITOR
             Application.logMessageReceived += HandleLog;
@@ -215,6 +217,7 @@ namespace MyTools
                         idx++;
                     } while (File.Exists(newName));
                     try { File.Move(logPath, newName); } catch { /* 忽略重命名失败 */ }
+                    TryArchiveFile(newName);
 
                     // 重新打开原路径的文件（作为新文件）
                     var fs = new FileStream(logPath, FileMode.Append, FileAccess.Write, FileShare.Read);
@@ -283,6 +286,57 @@ namespace MyTools
             foreach (var c in Path.GetInvalidPathChars())
                 path = path.Replace(c.ToString(), "_");
             return path;
+        }
+
+        private static void TryArchiveStaleLogs(string basePath, string activeLogFile)
+        {
+            if (currentConfig == null || !currentConfig.enableArchive) return;
+            if (string.IsNullOrEmpty(basePath) || !Directory.Exists(basePath)) return;
+
+            try
+            {
+                string[] logFiles = Directory.GetFiles(basePath, "Log_*.txt", SearchOption.TopDirectoryOnly);
+                foreach (var file in logFiles)
+                {
+                    if (string.Equals(file, activeLogFile, StringComparison.OrdinalIgnoreCase)) continue;
+                    TryArchiveFile(file);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"[RuntimeLogExporter] Archive stale logs failed: {e.Message}");
+            }
+        }
+
+        private static void TryArchiveFile(string sourceFilePath)
+        {
+            if (currentConfig == null || !currentConfig.enableArchive) return;
+            if (string.IsNullOrEmpty(sourceFilePath) || !File.Exists(sourceFilePath)) return;
+
+            try
+            {
+                string baseDir = Path.GetDirectoryName(sourceFilePath);
+                if (string.IsNullOrEmpty(baseDir)) return;
+                string folderName = string.IsNullOrWhiteSpace(currentConfig.archiveFolderName) ? "Archive" : currentConfig.archiveFolderName.Trim();
+                string archiveDir = Path.Combine(baseDir, folderName);
+                if (!Directory.Exists(archiveDir))
+                    Directory.CreateDirectory(archiveDir);
+
+                string fileName = Path.GetFileName(sourceFilePath);
+                string targetPath = Path.Combine(archiveDir, fileName);
+                if (File.Exists(targetPath))
+                {
+                    string name = Path.GetFileNameWithoutExtension(fileName);
+                    string ext = Path.GetExtension(fileName);
+                    targetPath = Path.Combine(archiveDir, $"{name}_{DateTime.Now:yyyyMMdd_HHmmssfff}{ext}");
+                }
+
+                File.Move(sourceFilePath, targetPath);
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"[RuntimeLogExporter] Archive file failed: {e.Message}");
+            }
         }
     }
 }
