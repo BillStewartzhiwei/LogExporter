@@ -14,6 +14,7 @@
     "url": "https://yourcompany.com"
   },
   "documentationUrl": "https://github.com/BillStewartzhiwei/LogExporter#readme",
-  "changelogUrl":"https://github.com/BillStewartzhiwei/LogExporter/releases"
+  "changelogUrl": "https://github.com/BillStewartzhiwei/LogExporter/releases",
+  "license": "MIT",
+  "licensesUrl": "https://github.com/BillStewartzhiwei/LogExporter/blob/main/LICENSE"
 }
-
